@@ -4,6 +4,7 @@ import com.simon.android.networklib.controller.RequestUIListener;
 import com.simon.android.networklib.controller.ServerError;
 import com.simon.android.networklib.controller.tasks.NetworkTask;
 import com.simon.intigral.movies.model.MovieDetails;
+import com.simon.intigral.movies.model.MoviesRequestID;
 import com.simon.intigral.movies.model.MoviesRequestParams;
 
 /**
@@ -33,42 +34,46 @@ public class MoviesManager {
 
         //increase the page on the request param to load the next page
         popularParams.increasePage();
-        loadMoviesForList(popularParams, uiListener);
+        loadMoviesForList(MoviesRequestID.LOAD_POPULAR, popularParams, uiListener);
     }
 
     public void loadTopRatedNextPage(final RequestUIListener<MovieDetails[]> uiListener) {
 
         //increase the page on the request param to load the next page
         topRatedParams.increasePage();
-        loadMoviesForList(topRatedParams, uiListener);
+        loadMoviesForList(MoviesRequestID.LOAD_TOP_RATED, topRatedParams, uiListener);
     }
 
     public void loadMostRecentNextPage(final RequestUIListener<MovieDetails[]> uiListener) {
 
         //increase the page on the request param to load the next page
         mostRecentParams.increasePage();
-        loadMoviesForList(mostRecentParams, uiListener);
+        loadMoviesForList(MoviesRequestID.LOAD_RECENT, mostRecentParams, uiListener);
     }
 
     public void loadRevenueNextPage(final RequestUIListener<MovieDetails[]> uiListener) {
 
         //increase the page on the request param to load the next page
         revenueParams.increasePage();
-        loadMoviesForList(revenueParams, uiListener);
+        loadMoviesForList(MoviesRequestID.LOAD_REVENUE, revenueParams, uiListener);
     }
 
     /**
      * Method create a load movies task for a specific parameters (Movies List)
+     * @param requestID the id for the request
      * @param requestParams
      * @param uiListener
      */
-    private void loadMoviesForList(final MoviesRequestParams requestParams, final RequestUIListener<MovieDetails[]> uiListener) {
+    private void loadMoviesForList(final MoviesRequestID requestID,
+                                   final MoviesRequestParams requestParams,
+                                   final RequestUIListener<MovieDetails[]> uiListener) {
 
         LoadMoviesTask moviesTask = new LoadMoviesTask();
+        moviesTask.setTaskRequestTag(requestID);
         moviesTask.setOnCompleteListener(new NetworkTask.OnCompleteListener<MovieDetails[]>() {
             @Override
             public void onComplete(MovieDetails[] movieDetails) {
-                uiListener.onCompleted(movieDetails, null);
+                uiListener.onCompleted(requestID, movieDetails, null);
             }
         });
 
@@ -78,16 +83,16 @@ public class MoviesManager {
 
                 //decrease the page count because the current request was failed
                 requestParams.decreasePage();
-                notifyError(exception, uiListener);
+                notifyError(requestID, exception, uiListener);
             }
         });
 
         //notify the UI screen to start loading
-        uiListener.requestWillStart();
+        uiListener.requestWillStart(requestID);
         moviesTask.execute(requestParams);
     }
 
-    private void notifyError(Exception exception, RequestUIListener<MovieDetails[]> uiListener) {
+    private void notifyError(MoviesRequestID requestID, Exception exception, RequestUIListener<MovieDetails[]> uiListener) {
 
         ServerError serverError;
         if(exception instanceof ServerError) {
@@ -98,6 +103,6 @@ public class MoviesManager {
             serverError.setErrorCode(ServerError.detectErrorFromException(exception));
             serverError.initCause(exception);
         }
-        uiListener.onCompleted(null, serverError);
+        uiListener.onCompleted(requestID, null, serverError);
     }
 }

@@ -10,7 +10,6 @@ public class MoviesRequestParams {
 
     public MoviesRequestParams(String sortingKey) {
 
-        this.page = -1;
         this.sortingKey = sortingKey;
     }
 

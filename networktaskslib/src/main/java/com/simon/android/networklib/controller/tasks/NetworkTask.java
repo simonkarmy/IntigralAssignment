@@ -25,7 +25,7 @@ import com.simon.android.networklib.controller.utils.NetworkUtil;
  */
 abstract public class NetworkTask<Params, Progress, Result> extends AsyncTask<Params, Progress, Result> {
 
-    private String tag;
+    private TaskRequestID taskRequestTag;
     private Exception exception;
     private boolean isComplete = false;
     private boolean isAborted = false;
@@ -34,12 +34,12 @@ abstract public class NetworkTask<Params, Progress, Result> extends AsyncTask<Pa
     private OnCompleteListener<Result> completeListener;
     private OnExceptionListener exceptionListener;
 
-    public String getTag() {
-        return tag;
+    public TaskRequestID getTaskRequestTag() {
+        return taskRequestTag;
     }
 
-    public void setTag(String tag) {
-        this.tag = tag;
+    public void setTaskRequestTag(TaskRequestID taskRequestTag) {
+        this.taskRequestTag = taskRequestTag;
     }
 
     public boolean isComplete() {
