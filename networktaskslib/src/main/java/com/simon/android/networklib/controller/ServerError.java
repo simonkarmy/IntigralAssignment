@@ -7,14 +7,13 @@ import org.json.JSONException;
 /**
  * Created by Simon simonkarmy2004@gmail.com on 11/4/2015
  */
-public class ServerError {
+public class ServerError extends Exception {
 
     public static final String NETWORK_ERROR_CODE = "NL_1000";
     public static final String PARSING_ERROR_CODE = "NL_1001";
     public static final String GENERIC_ERROR_CODE = "NL_1002";
 
     private String errorCode;
-    private Exception cause;
     private String errorMessage;
 
     public String getErrorCode() {
@@ -25,13 +24,6 @@ public class ServerError {
         this.errorCode = errorCode;
     }
 
-    public Exception getCause() {
-        return cause;
-    }
-
-    public void setCause(Exception cause) {
-        this.cause = cause;
-    }
 
     public String getErrorMessage() {
         return errorMessage;

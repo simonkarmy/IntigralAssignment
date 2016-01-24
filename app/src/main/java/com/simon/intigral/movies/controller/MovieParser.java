@@ -14,7 +14,7 @@ import java.io.Reader;
  */
 public class MovieParser {
 
-    public static MovieDetails[] parseMovieDetails(Reader objectString) throws JSONException {
+    public static MovieDetails[] parseMovieDetails(Reader objectString) throws Exception {
 
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
 

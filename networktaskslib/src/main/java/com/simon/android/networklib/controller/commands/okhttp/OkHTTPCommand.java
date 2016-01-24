@@ -1,8 +1,12 @@
 package com.simon.android.networklib.controller.commands.okhttp;
 
 import android.text.TextUtils;
+import android.util.Log;
 
+import com.simon.android.networklib.controller.NetworkConstants;
+import com.simon.android.networklib.controller.ServerError;
 import com.simon.android.networklib.controller.commands.NetworkCommandAbs;
+import com.simon.android.networklib.controller.utils.NetworkUtil;
 import com.squareup.okhttp.HttpUrl;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
@@ -86,14 +90,16 @@ public abstract class OkHTTPCommand extends NetworkCommandAbs {
         canceled = true;
         requestBuilder.url(urlBuilder.build());
         Request request = requestBuilder.build();
-        try {
-            Response response = client.newCall(request).execute();
+        Response response = client.newCall(request).execute();
+        if(response.code() != 200) {
+
+            ServerError serverError = new ServerError();
+            serverError.setErrorCode("" + response.code());
+            serverError.setErrorMessage(response.message());
+            Log.d(NetworkConstants.TAG, response.toString());
+            throw serverError;
+        } else {
             return response.body().charStream();
-        } catch (IOException ex) {
-            if(!canceled) {
-                ex.printStackTrace();
-            }
-            throw ex;
         }
     }
 

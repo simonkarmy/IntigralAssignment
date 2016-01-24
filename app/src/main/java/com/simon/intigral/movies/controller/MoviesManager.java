@@ -89,9 +89,15 @@ public class MoviesManager {
 
     private void notifyError(Exception exception, RequestUIListener<MovieDetails[]> uiListener) {
 
-        ServerError serverError = new ServerError();
-        serverError.setErrorCode(ServerError.detectErrorFromException(exception));
-        serverError.setCause(exception);
+        ServerError serverError;
+        if(exception instanceof ServerError) {
+
+            serverError = (ServerError) exception;
+        } else {
+            serverError = new ServerError();
+            serverError.setErrorCode(ServerError.detectErrorFromException(exception));
+            serverError.initCause(exception);
+        }
         uiListener.onCompleted(null, serverError);
     }
 }
