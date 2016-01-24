@@ -32,6 +32,6 @@ public class LoadMoviesCommand extends OkHTTPCommand {
 
     @Override
     protected String[] getPathSegments() {
-        return new String[]{"discover", "movie"};
+        return new String[]{"3", "discover", "movie"};
     }
 }

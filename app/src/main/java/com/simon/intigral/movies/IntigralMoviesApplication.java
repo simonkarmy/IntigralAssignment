@@ -14,6 +14,7 @@ public class IntigralMoviesApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
+        //initialize the network library
         NetworkLib.init(getApplicationContext());
 
         //TO init all managers
