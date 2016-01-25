@@ -40,6 +40,13 @@ public class MoviesListFragment extends Fragment implements RequestUIListener<Mo
     private LinearLayoutManager popularLayoutManager;
     private TextView popularLoadingError;
     private boolean popularLoading;
+    
+    private ProgressBar topRatedLoadingView;
+    private RecyclerView topRatedRecycler;
+    private MovieRecyclerAdapter topRatedAdapter;
+    private LinearLayoutManager topRatedLayoutManager;
+    private TextView topRatedLoadingError;
+    private boolean topRatedLoading;
 
     public MoviesListFragment() {
 
@@ -69,6 +76,7 @@ public class MoviesListFragment extends Fragment implements RequestUIListener<Mo
         View rootView = inflater.inflate(R.layout.fragment_movies_list, container, false);
 
         initPopularMoviesList(rootView);
+        initTopRatedMoviesList(rootView);
 
         return rootView;
     }
@@ -101,11 +109,41 @@ public class MoviesListFragment extends Fragment implements RequestUIListener<Mo
         });
     }
 
+    private void initTopRatedMoviesList(View rootView) {
+
+        topRatedRecycler = (RecyclerView) rootView.findViewById(R.id.top_rated_movies_recycler_view);
+        topRatedLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        topRatedRecycler.setLayoutManager(topRatedLayoutManager);
+        topRatedLoadingView = (ProgressBar) rootView.findViewById(R.id.top_rated_loading_view);
+        topRatedLoadingError = (TextView) rootView.findViewById(R.id.top_rated_loading_error);
+
+        if (topRatedAdapter == null) {
+            topRatedAdapter = new MovieRecyclerAdapter(new ArrayList<MovieDetails>());
+            topRatedAdapter.setMovieListener(this);
+            moviesManager.loadTopRatedNextPage(this);
+        }
+        topRatedRecycler.setAdapter(topRatedAdapter);
+
+        topRatedRecycler.addOnScrollListener(new OnScrollListener() {
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (topRatedLayoutManager.findLastVisibleItemPosition() > topRatedAdapter.getItemCount() - 5 && !topRatedLoading) {
+                    topRatedLoading = true;
+                    moviesManager.loadTopRatedNextPage(MoviesListFragment.this);
+                }
+            }
+        });
+    }
+
     @Override
     public void requestWillStart(TaskRequestID requestID) {
 
         if (requestID == MoviesRequestID.LOAD_POPULAR) {
             popularLoadingView.setVisibility(View.VISIBLE);
+        } else if (requestID == MoviesRequestID.LOAD_TOP_RATED) {
+            topRatedLoadingView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -114,6 +152,8 @@ public class MoviesListFragment extends Fragment implements RequestUIListener<Mo
 
         if (requestID == MoviesRequestID.LOAD_POPULAR) {
             handlePopularLoadingFinished(response, errorType);
+        } else if (requestID == MoviesRequestID.LOAD_TOP_RATED) {
+            handleTopRatedLoadingFinished(response, errorType);
         }
     }
 
@@ -130,6 +170,22 @@ public class MoviesListFragment extends Fragment implements RequestUIListener<Mo
 
             popularLoadingError.setVisibility(View.VISIBLE);
             popularRecycler.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private void handleTopRatedLoadingFinished(MovieDetails[] response, ServerError errorType) {
+
+        topRatedLoading = false;
+        topRatedLoadingView.setVisibility(View.GONE);
+        if(errorType == null) {
+            topRatedLoadingError.setVisibility(View.GONE);
+            topRatedRecycler.setVisibility(View.VISIBLE);
+            topRatedAdapter.appendMovies(response);
+            topRatedAdapter.notifyDataSetChanged();
+        } else {
+
+            topRatedLoadingError.setVisibility(View.VISIBLE);
+            topRatedRecycler.setVisibility(View.INVISIBLE);
         }
     }
 

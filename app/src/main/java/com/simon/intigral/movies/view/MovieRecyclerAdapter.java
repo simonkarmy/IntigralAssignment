@@ -72,6 +72,7 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdap
 
         MovieDetails currentMovie = moviesList.get(position);
         holder.movieLoading.setVisibility(View.VISIBLE);
+        Picasso.with(holder.context).cancelRequest(holder.moviePoster);
         Picasso.with(holder.context)
                 .load(MoviesManager.generatePosterImageURL(currentMovie.getPosterImagePath()))
                 .error(R.drawable.movie_error)

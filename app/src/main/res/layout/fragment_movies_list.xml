@@ -50,4 +50,49 @@
             android:visibility="gone"
             android:layout_gravity="center"/>
     </FrameLayout>
+
+    <LinearLayout
+        android:layout_marginTop="@dimen/padding_large"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/padding_normal"
+            android:text="Top Rated"
+            android:textSize="@dimen/text_size_large"
+            android:textStyle="bold" />
+
+        <ProgressBar
+            android:id="@+id/top_rated_loading_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_large"
+            android:layout_marginStart="@dimen/padding_large"
+            android:visibility="gone"
+            android:layout_gravity="center_vertical"
+            style="?android:attr/android:progressBarStyleSmall"
+            />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/top_rated_movies_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/movie_row_hieght"
+            android:scrollbars="horizontal" />
+
+        <TextView
+            android:id="@+id/top_rated_loading_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/top_rated_error"
+            android:visibility="gone"
+            android:layout_gravity="center"/>
+    </FrameLayout>
 </LinearLayout>

@@ -19,6 +19,6 @@
     <dimen name="dates_day_text_size">32sp</dimen>
     <dimen name="airport_code_text_size">35sp</dimen>
 
-    <dimen name="movie_row_hieght">150dp</dimen>
-    <dimen name="movie_row_width">100dp</dimen>
+    <dimen name="movie_row_hieght">110dp</dimen>
+    <dimen name="movie_row_width">75dp</dimen>
 </resources>
