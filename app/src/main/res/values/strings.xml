@@ -5,4 +5,8 @@
     <string name="desc_not_available">No details available about this movie</string>
     <string name="popular_error">Error on loading popular movies</string>
     <string name="top_rated_error">Error on loading top rated movies</string>
+    <string name="revenue_error">Error on loading revenue movies</string>
+    <string name="revenue">Revenue</string>
+    <string name="top_rated">Top Rated</string>
+    <string name="popular">Popular</string>
 </resources>

@@ -48,6 +48,13 @@ public class MoviesListFragment extends Fragment implements RequestUIListener<Mo
     private TextView topRatedLoadingError;
     private boolean topRatedLoading;
 
+    private ProgressBar revenueLoadingView;
+    private RecyclerView revenueRecycler;
+    private MovieRecyclerAdapter revenueAdapter;
+    private LinearLayoutManager revenueLayoutManager;
+    private TextView revenueLoadingError;
+    private boolean revenueLoading;
+
     public MoviesListFragment() {
 
     }
@@ -77,8 +84,37 @@ public class MoviesListFragment extends Fragment implements RequestUIListener<Mo
 
         initPopularMoviesList(rootView);
         initTopRatedMoviesList(rootView);
+        initRevenueMoviesList(rootView);
 
         return rootView;
+    }
+
+    private void initRevenueMoviesList(View rootView) {
+
+        revenueRecycler = (RecyclerView) rootView.findViewById(R.id.revenue_movies_recycler_view);
+        revenueLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        revenueRecycler.setLayoutManager(revenueLayoutManager);
+        revenueLoadingView = (ProgressBar) rootView.findViewById(R.id.revenue_loading_view);
+        revenueLoadingError = (TextView) rootView.findViewById(R.id.revenue_loading_error);
+
+        if (revenueAdapter == null) {
+            revenueAdapter = new MovieRecyclerAdapter(new ArrayList<MovieDetails>());
+            revenueAdapter.setMovieListener(this);
+            moviesManager.loadRevenueNextPage(this);
+        }
+        revenueRecycler.setAdapter(revenueAdapter);
+
+        revenueRecycler.addOnScrollListener(new OnScrollListener() {
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (revenueLayoutManager.findLastVisibleItemPosition() > revenueAdapter.getItemCount() - 5 && !revenueLoading) {
+                    revenueLoading = true;
+                    moviesManager.loadRevenueNextPage(MoviesListFragment.this);
+                }
+            }
+        });
     }
 
     private void initPopularMoviesList(View rootView) {
@@ -144,6 +180,8 @@ public class MoviesListFragment extends Fragment implements RequestUIListener<Mo
             popularLoadingView.setVisibility(View.VISIBLE);
         } else if (requestID == MoviesRequestID.LOAD_TOP_RATED) {
             topRatedLoadingView.setVisibility(View.VISIBLE);
+        } else if (requestID == MoviesRequestID.LOAD_REVENUE) {
+            revenueLoadingView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -154,6 +192,8 @@ public class MoviesListFragment extends Fragment implements RequestUIListener<Mo
             handlePopularLoadingFinished(response, errorType);
         } else if (requestID == MoviesRequestID.LOAD_TOP_RATED) {
             handleTopRatedLoadingFinished(response, errorType);
+        } else if (requestID == MoviesRequestID.LOAD_REVENUE) {
+            handleRevenueLoadingFinished(response, errorType);
         }
     }
 
@@ -186,6 +226,22 @@ public class MoviesListFragment extends Fragment implements RequestUIListener<Mo
 
             topRatedLoadingError.setVisibility(View.VISIBLE);
             topRatedRecycler.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private void handleRevenueLoadingFinished(MovieDetails[] response, ServerError errorType) {
+
+        revenueLoading = false;
+        revenueLoadingView.setVisibility(View.GONE);
+        if(errorType == null) {
+            revenueLoadingError.setVisibility(View.GONE);
+            revenueRecycler.setVisibility(View.VISIBLE);
+            revenueAdapter.appendMovies(response);
+            revenueAdapter.notifyDataSetChanged();
+        } else {
+
+            revenueLoadingError.setVisibility(View.VISIBLE);
+            revenueRecycler.setVisibility(View.INVISIBLE);
         }
     }
 
