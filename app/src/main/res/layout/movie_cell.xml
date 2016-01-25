@@ -7,6 +7,7 @@
     android:layout_gravity="center"
     android:layout_marginLeft="@dimen/padding_normal"
     android:layout_marginRight="@dimen/padding_normal"
+    android:foreground="?android:attr/selectableItemBackground"
     card_view:cardCornerRadius="4dp">
 
     <ImageView

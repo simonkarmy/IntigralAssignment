@@ -23,9 +23,14 @@ import java.util.Arrays;
 public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdapter.MovieViewHolder> {
 
     private ArrayList<MovieDetails> moviesList;
+    private MovieClickListener mListener;
 
     public MovieRecyclerAdapter(ArrayList<MovieDetails> moviesList) {
         this.moviesList = moviesList;
+    }
+
+    public void setMovieListener(MovieClickListener mListener) {
+        this.mListener = mListener;
     }
 
     public void appendMovies(MovieDetails[] movies) {
@@ -49,7 +54,16 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdap
     @Override
     public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_cell, parent, false);
-        MovieViewHolder vh = new MovieViewHolder(v);
+        final MovieViewHolder vh = new MovieViewHolder(v);
+        v.setClickable(true);
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mListener != null) {
+                    mListener.onMovieClicked(moviesList.get(vh.getAdapterPosition()));
+                }
+            }
+        });
         return vh;
     }
 
@@ -59,7 +73,7 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdap
         MovieDetails currentMovie = moviesList.get(position);
         holder.movieLoading.setVisibility(View.VISIBLE);
         Picasso.with(holder.context)
-                .load(MoviesManager.generateImageURL(currentMovie.getPosterImagePath()))
+                .load(MoviesManager.generatePosterImageURL(currentMovie.getPosterImagePath()))
                 .error(R.drawable.movie_error)
                 .into(holder.moviePoster, new Callback() {
                     @Override
@@ -77,5 +91,10 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdap
     @Override
     public int getItemCount() {
         return moviesList.size();
+    }
+
+    public interface MovieClickListener {
+
+        public void onMovieClicked(MovieDetails movieDetails);
     }
 }

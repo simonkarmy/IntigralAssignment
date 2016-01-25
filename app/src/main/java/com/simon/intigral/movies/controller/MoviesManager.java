@@ -106,8 +106,13 @@ public class MoviesManager {
         uiListener.onCompleted(requestID, null, serverError);
     }
 
-    public static String generateImageURL(String imagePath) {
+    public static String generatePosterImageURL(String imagePath) {
 
         return "http://image.tmdb.org/t/p/w300" + imagePath;
+    }
+
+    public static String generateBannerImageURL(String imagePath) {
+
+        return "http://image.tmdb.org/t/p/w500" + imagePath;
     }
 }

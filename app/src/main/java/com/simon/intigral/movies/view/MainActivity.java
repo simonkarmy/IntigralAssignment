@@ -2,11 +2,14 @@ package com.simon.intigral.movies.view;
 
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 import com.simon.intigral.movies.R;
+import com.simon.intigral.movies.model.MovieDetails;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MoviesListFragment.OnMovieSelectedListener {
 
     private MoviesListFragment listFragment;
     private MovieDetailsFragment detailsFragment;
@@ -34,6 +37,28 @@ public class MainActivity extends AppCompatActivity {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
+    }
+
+    @Override
+    public void onMovieSelected(MovieDetails movieDetails) {
+
+        if(detailsFragment != null) {
+
+            detailsFragment.updateMovieDetails(movieDetails);
+        }
+        if(!isTablet) {
+            detailsFragment = new MovieDetailsFragment();
+            Bundle args = new Bundle();
+            args.putSerializable(MovieDetailsFragment.MOVIE_DETAILS, movieDetails);
+            detailsFragment.setArguments(args);
+
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+            transaction.replace(R.id.screen_content, detailsFragment);
+            transaction.addToBackStack(null);
+
+            transaction.commit();
         }
     }
 }

@@ -2,10 +2,12 @@ package com.simon.intigral.movies.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by Simon simon@taqniatech.com on 1/24/2016
  */
-public class MovieDetails {
+public class MovieDetails implements Serializable {
 
     @SerializedName("poster_path")
     private String posterImagePath;
