@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/details_bg"
     tools:context="com.simon.intigral.movies.view.MovieDetailsFragment">
 
     <ImageView
@@ -17,6 +18,7 @@
         android:layout_height="wrap_content"
         android:textSize="@dimen/text_size_xlarge"
         android:padding="@dimen/padding_normal"
+        android:textColor="@color/details_text_color"
         android:textStyle="bold"
         />
 
@@ -26,6 +28,7 @@
         android:layout_height="wrap_content"
         android:textSize="@dimen/text_size_large"
         android:padding="@dimen/padding_normal"
+        android:textColor="@color/details_text_color"
         android:drawableLeft="@drawable/movie_rating"
         android:drawableStart="@drawable/movie_rating"
         android:drawablePadding="@dimen/padding_normal"
@@ -39,6 +42,7 @@
             android:id="@+id/movie_details_overview"
             android:padding="@dimen/padding_normal"
             android:layout_width="match_parent"
+            android:textColor="@color/details_text_color"
             android:layout_height="wrap_content" />
     </ScrollView>
 

@@ -21,13 +21,11 @@ import com.squareup.picasso.Picasso;
 public class MovieDetailsFragment extends Fragment {
 
     public static final String MOVIE_DETAILS = "MOVIE_DETAILS";
-    private MovieDetails currentMovie;
 
     private ImageView movieBannerView;
     private TextView movieNameView;
     private TextView movieRatingView;
     private TextView movieOverviewView;
-
 
     public MovieDetailsFragment() {
 
@@ -44,25 +42,27 @@ public class MovieDetailsFragment extends Fragment {
         movieRatingView = (TextView) rootView.findViewById(R.id.movie_details_rating);
         movieOverviewView = (TextView) rootView.findViewById(R.id.movie_details_overview);
 
-        currentMovie = (MovieDetails) getArguments().getSerializable(MOVIE_DETAILS);
-        if(currentMovie != null)
-            updateMovieDetails(currentMovie);
+        if (getArguments() != null) {
+            MovieDetails currentMovie = (MovieDetails) getArguments().getSerializable(MOVIE_DETAILS);
+            if (currentMovie != null)
+                updateMovieDetails(currentMovie);
+        }
 
         return rootView;
     }
 
     public void updateMovieDetails(MovieDetails movieDetails) {
 
-        movieNameView.setText(currentMovie.getTitle());
-        movieRatingView.setText(String.valueOf(currentMovie.getVoteAvg()));
-        if(!TextUtils.isEmpty(movieDetails.getOverview())) {
+        movieNameView.setText(movieDetails.getTitle());
+        movieRatingView.setText(String.valueOf(movieDetails.getVoteAvg()));
+        if (!TextUtils.isEmpty(movieDetails.getOverview())) {
             movieOverviewView.setText(movieDetails.getOverview());
         } else {
             movieOverviewView.setText(R.string.desc_not_available);
         }
 
         Picasso.with(getContext())
-                .load(MoviesManager.generateBannerImageURL(currentMovie.getBannerImagePath()))
+                .load(MoviesManager.generateBannerImageURL(movieDetails.getBannerImagePath()))
                 .into(movieBannerView);
     }
 
