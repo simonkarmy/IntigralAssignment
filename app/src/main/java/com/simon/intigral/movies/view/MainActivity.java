@@ -1,44 +1,39 @@
 package com.simon.intigral.movies.view;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.TextView;
+import android.support.v7.app.AppCompatActivity;
 
-import com.simon.android.networklib.controller.RequestUIListener;
-import com.simon.android.networklib.controller.ServerError;
 import com.simon.intigral.movies.R;
-import com.simon.intigral.movies.controller.Controller;
-import com.simon.intigral.movies.model.MovieDetails;
 
 public class MainActivity extends AppCompatActivity {
+
+    private MoviesListFragment listFragment;
+    private MovieDetailsFragment detailsFragment;
+
+    private boolean isTablet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Controller.getInstance().getMoviesManager().loadPopularNextPage(new RequestUIListener<MovieDetails[]>() {
-            @Override
-            public void requestWillStart() {
-                findViewById(R.id.loading).setVisibility(View.VISIBLE);
-            }
+        isTablet = findViewById(R.id.screen_content) == null;
 
-            @Override
-            public void onCompleted(MovieDetails[] response, ServerError errorType) {
-                findViewById(R.id.loading).setVisibility(View.GONE);
+        if(isTablet) {
 
-                TextView textView = (TextView) findViewById(R.id.text_view);
-                if(errorType != null) {
-                    textView.setText(errorType.getErrorMessage());
-                } else {
-                    textView.setText(response.length + "");
-                }
-            }
-        });
+            listFragment = (MoviesListFragment) getSupportFragmentManager().findFragmentById(R.id.list_fragment);
+            detailsFragment = (MovieDetailsFragment) getSupportFragmentManager().findFragmentById(R.id.details_fragment);
+        } else {
+
+            listFragment = new MoviesListFragment();
+            getSupportFragmentManager().beginTransaction().add(R.id.screen_content, listFragment).commit();
+        }
+
+        if(isTablet) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
     }
 }

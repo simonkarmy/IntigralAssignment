@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:layout_width="@dimen/movie_row_width"
+    android:layout_height="@dimen/movie_row_hieght"
+    android:layout_gravity="center"
+    android:layout_marginLeft="@dimen/padding_normal"
+    android:layout_marginRight="@dimen/padding_normal"
+    card_view:cardCornerRadius="4dp">
+
+    <ImageView
+        android:id="@+id/movie_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"/>
+
+    <ProgressBar
+        android:id="@+id/movie_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
+</android.support.v7.widget.CardView>

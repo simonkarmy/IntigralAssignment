@@ -1,0 +1,24 @@
+<resources>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="divider_height">1dp</dimen>
+    <dimen name="padding_small">2dp</dimen>
+    <dimen name="padding_normal">5dp</dimen>
+    <dimen name="padding_large">9dp</dimen>
+    <dimen name="padding_xlarge">12dp</dimen>
+    <dimen name="padding_xxlarge">16dp</dimen>
+
+    <dimen name="text_size_xsmall">10sp</dimen>
+    <dimen name="text_size_small">14sp</dimen>
+    <dimen name="text_size_medium">15sp</dimen>
+    <dimen name="text_size_large">20sp</dimen>
+    <dimen name="text_size_xlarge">24sp</dimen>
+    <dimen name="dates_day_text_size">32sp</dimen>
+    <dimen name="airport_code_text_size">35sp</dimen>
+
+    <dimen name="movie_row_hieght">150dp</dimen>
+    <dimen name="movie_row_width">100dp</dimen>
+</resources>
