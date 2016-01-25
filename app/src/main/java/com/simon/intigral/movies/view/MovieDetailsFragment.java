@@ -55,6 +55,7 @@ public class MovieDetailsFragment extends Fragment {
 
         movieNameView.setText(movieDetails.getTitle());
         movieRatingView.setText(String.valueOf(movieDetails.getVoteAvg()));
+        movieRatingView.setVisibility(View.VISIBLE);
         if (!TextUtils.isEmpty(movieDetails.getOverview())) {
             movieOverviewView.setText(movieDetails.getOverview());
         } else {
@@ -63,6 +64,7 @@ public class MovieDetailsFragment extends Fragment {
 
         Picasso.with(getContext())
                 .load(MoviesManager.generateBannerImageURL(movieDetails.getBannerImagePath()))
+                .error(R.drawable.movie_banner_error)
                 .into(movieBannerView);
     }
 

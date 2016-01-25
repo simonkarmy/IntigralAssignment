@@ -26,12 +26,14 @@
         android:id="@+id/movie_details_rating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/text_size_large"
+        android:textSize="@dimen/text_size_medium"
         android:padding="@dimen/padding_normal"
         android:textColor="@color/details_text_color"
         android:drawableLeft="@drawable/movie_rating"
         android:drawableStart="@drawable/movie_rating"
         android:drawablePadding="@dimen/padding_normal"
+        android:visibility="invisible"
+        android:textStyle="bold"
         />
 
     <ScrollView
