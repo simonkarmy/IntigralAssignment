@@ -21,6 +21,8 @@ public class LoadMoviesTask extends NetworkTask<MoviesRequestParams, Void, Movie
     @Override
     protected void cancelCommands() {
 
-        loadMoviesCommand.cancel();
+        if(loadMoviesCommand != null) {
+            loadMoviesCommand.cancel();
+        }
     }
 }
